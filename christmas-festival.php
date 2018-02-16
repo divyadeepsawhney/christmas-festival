@@ -11,6 +11,21 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 */
 
 /**
+ * Plugin Activation
+ */
+function christmas_festival_activation(){
+    register_uninstall_hook(__FILE__,'christmas_festival_uninstall');
+}
+register_activation_hook(__FILE__,'christmas_festival_activation');
+
+/**
+ * PLugin Uninstall
+ */
+function christmas_festival_uninstall(){
+    delete_option('christmas_festival_snow_status');
+}
+
+/**
  * Admin Menu
  */
 function christmas_festival_menu(){
@@ -22,11 +37,19 @@ add_action('admin_menu','christmas_festival_menu');
  * Settings Page
  */
 function christmas_festival_settings_page(){
-    echo "<h1>Welcome to Christmas Festival</h1>";
+    if(isset($_POST['save_settings'])){ 
+        //Save the settings in the DB
+        update_option('christmas_festival_snow_status','ON');
+        //Show notification
+        echo 'Settings Saved!';
+        
+    }
+    echo '<form method="post">';
+    echo '<h1>Welcome to Christmas Festival</h1>';
     echo 'Enable Snow Effect <input type="checkbox" />';
     echo '<br />';
     echo '<input type="submit" name="save_settings" class="button button-primary" value="Save">';
-
+    echo '</form>';
 
 }
 
