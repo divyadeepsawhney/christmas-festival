@@ -23,7 +23,8 @@ add_action('admin_menu','christmas_festival_menu');
  */
 function christmas_festival_settings_page(){
     echo "<h1>Welcome to Christmas Festival</h1>";
-
+    echo 'Enable Snow Effect <input type="checkbox" />';
+    echo '<br />';
     echo '<input type="submit" name="save_settings" class="button button-primary" value="Save">';
 
 
