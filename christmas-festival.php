@@ -14,7 +14,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Plugin Activation
  */
 function christmas_festival_activation(){
+    //Enable uninstall 
     register_uninstall_hook(__FILE__,'christmas_festival_uninstall');
+
+    //Populate Data
+    update_option('christmas_festival_snow_status','OFF');
 }
 register_activation_hook(__FILE__,'christmas_festival_activation');
 
