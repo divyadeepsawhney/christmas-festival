@@ -50,10 +50,36 @@ function christmas_festival_settings_page(){
     }
     echo '<form method="post">';
     echo '<h1>Welcome to Christmas Festival</h1>';
-    echo 'Enable Snow Effect <input type="checkbox" />';
+    echo 'Enable Snow Effect <input type="checkbox" id="christmas-festival-snow" />';
     echo '<br />';
     echo '<input type="submit" name="save_settings" class="button button-primary" value="Save">';
     echo '</form>';
 
 }
 
+/**
+ * Enqueue JS Script
+ */
+function my_enqueue( $hook ) {
+    //if( 'christmas-festival.php' != $hook ) return;
+    wp_enqueue_script( 'ajax-script',
+        plugins_url( '/admin/js/christmas-festival-admin.js', __FILE__ ),
+        array( 'jquery' )
+    );
+    $title_nonce = wp_create_nonce( 'christmas_festival' );
+    wp_localize_script( 'ajax-script', 'my_ajax_obj', array(
+       'ajax_url' => admin_url( 'admin-ajax.php' ),
+       'nonce'    => $title_nonce,
+    ) );
+}
+add_action( 'admin_enqueue_scripts', 'my_enqueue' );
+
+/**
+ * AJAX HANDLER
+ */
+function my_ajax_handler() {
+    check_ajax_referer( 'christmas_festival' );
+    update_option('christmas_festival_snow_status','ON');
+    wp_send_json_success();
+}
+add_action( 'wp_ajax_christmas_festival_save_settings', 'my_ajax_handler' );
