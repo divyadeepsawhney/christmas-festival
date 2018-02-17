@@ -50,7 +50,11 @@ function christmas_festival_settings_page(){
     }
     echo '<form method="post">';
     echo '<h1>Welcome to Christmas Festival</h1>';
-    echo 'Enable Snow Effect <input type="checkbox" id="christmas-festival-snow" />';
+    if(get_option('christmas_festival_snow_status') == 'OFF'){
+        echo 'Enable Snow Effect <input type="checkbox" id="christmas-festival-snow" />';
+    }else{
+        echo 'Enable Snow Effect <input type="checkbox" id="christmas-festival-snow" checked />';
+    }
     echo '<br />';
     echo '<input type="submit" name="save_settings" class="button button-primary" value="Save">';
     echo '</form>';
@@ -66,10 +70,10 @@ function my_enqueue( $hook ) {
         plugins_url( '/admin/js/christmas-festival-admin.js', __FILE__ ),
         array( 'jquery' )
     );
-    $title_nonce = wp_create_nonce( 'christmas_festival' );
+    $nonce = wp_create_nonce( 'christmas_festival' );
     wp_localize_script( 'ajax-script', 'my_ajax_obj', array(
        'ajax_url' => admin_url( 'admin-ajax.php' ),
-       'nonce'    => $title_nonce,
+       'nonce'    => $nonce,
     ) );
 }
 add_action( 'admin_enqueue_scripts', 'my_enqueue' );
@@ -79,7 +83,7 @@ add_action( 'admin_enqueue_scripts', 'my_enqueue' );
  */
 function my_ajax_handler() {
     check_ajax_referer( 'christmas_festival' );
-    update_option('christmas_festival_snow_status','ON');
+    update_option('christmas_festival_snow_status',$_POST['snow_status']);
     wp_send_json_success();
 }
 add_action( 'wp_ajax_christmas_festival_save_settings', 'my_ajax_handler' );
