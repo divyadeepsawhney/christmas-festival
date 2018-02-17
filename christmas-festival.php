@@ -58,9 +58,9 @@ function christmas_festival_settings_page(){
 }
 
 /**
- * Enqueue JS Script
+ * Enqueue Admin JS
  */
-function my_enqueue( $hook ) {
+function admin_enqueue( $hook ) {
     //if( 'christmas-festival.php' != $hook ) return;
     wp_enqueue_script( 'ajax-script',
         plugins_url( '/admin/js/christmas-festival-admin.js', __FILE__ ),
@@ -72,7 +72,7 @@ function my_enqueue( $hook ) {
        'nonce'    => $nonce,
     ) );
 }
-add_action( 'admin_enqueue_scripts', 'my_enqueue' );
+add_action( 'admin_enqueue_scripts', 'admin_enqueue' );
 
 /**
  * AJAX HANDLER
@@ -83,3 +83,16 @@ function my_ajax_handler() {
     wp_send_json_success();
 }
 add_action( 'wp_ajax_christmas_festival_save_settings', 'my_ajax_handler' );
+
+/**
+ * Enqueue Public JS
+ */
+function frontend_enqueue(){
+    if(get_option('christmas_festival_snow_status') == 'ON'){
+        wp_enqueue_script( 'snowstorm',
+            plugins_url('/public/js/snowstorm-min.js', __FILE__),
+            array('jquery')
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'frontend_enqueue' );
