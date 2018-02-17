@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {           //wrapper
     $("#christmas-festival-snow").change(function() { 
-		alert('Checkbox Clicked');
+
 		var snow;
 		if($(this).prop("checked") == true){
 			snow = "ON";
