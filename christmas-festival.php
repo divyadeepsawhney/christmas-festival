@@ -41,22 +41,18 @@ add_action('admin_menu','christmas_festival_menu');
  * Settings Page
  */
 function christmas_festival_settings_page(){
-    if(isset($_POST['save_settings'])){ 
-        //Save the settings in the DB
-        update_option('christmas_festival_snow_status','ON');
-        //Show notification
-        echo 'Settings Saved!';
-        
-    }
-    echo '<form method="post">';
+   
     echo '<h1>Welcome to Christmas Festival</h1>';
+
+    echo '<form method="post">';
+
+
     if(get_option('christmas_festival_snow_status') == 'OFF'){
         echo 'Enable Snow Effect <input type="checkbox" id="christmas-festival-snow" />';
     }else{
         echo 'Enable Snow Effect <input type="checkbox" id="christmas-festival-snow" checked />';
     }
-    echo '<br />';
-    echo '<input type="submit" name="save_settings" class="button button-primary" value="Save">';
+    
     echo '</form>';
 
 }
